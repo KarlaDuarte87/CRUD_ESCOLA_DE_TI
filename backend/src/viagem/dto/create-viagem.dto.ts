@@ -21,7 +21,7 @@ export class CreateViagemDto {
     dataSaida: Date;  
 
     @IsDate({message: 'O campo de Data de chegada da viagem não pode estar vazio'})
-    @IsNotEmpty('O campo de Data de saída da viagem não pode estar vazio')
+    @IsNotEmpty({message:'O campo de Data de saída da viagem não pode estar vazio'})
     dataChegada: Date; 
 
 
