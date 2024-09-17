@@ -32,3 +32,17 @@ export class ViagemController {
     return this.viagemService.remove(+id);
   }
 }
+
+
+
+/* fazer as seguintes rotas: 
+
+- get all
+- get id
+- get nome
+- get data de saida
+- get data de chegada
+- get destino
+- get valor 
+
+*/

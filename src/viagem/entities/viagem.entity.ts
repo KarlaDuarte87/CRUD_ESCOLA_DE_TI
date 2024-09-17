@@ -2,10 +2,10 @@ import { Destino } from "src/destino/entities/destino.entity";
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany  } from "typeorm";
 
 
-@Entity({schema:'viagem_bd', name:'viagem'})
+@Entity({schema:'viagem', name:'viagem'})
 export class Viagem {
 
-@PrimaryGeneratedColumn({type: 'bigint' , primaryKeyConstraintName:'pk_viagem'})
+@PrimaryGeneratedColumn({type: 'bigint' , primaryKeyConstraintName:'pkViagem'})
 idKey:number;
 
 @Column({type: 'text', nullable: false, unique: true})
@@ -20,13 +20,14 @@ dataSaida: Date;
 @UpdateDateColumn({ type: 'timestamp', name: 'dataChegada' })
 dataChegada: Date;
 
-
-
+/*
 @Column({ type: 'timestamp', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
   data_cadastro: Date;
 
   @OneToMany(() Destino, destino => destino.idKey)
   @JoinColumn({ name: 'idkey', referencedColumnName: 'idkey', foreignKeyConstraintName: 'fk_destino'})
   destino: Destino;
+
+   */
 }
 

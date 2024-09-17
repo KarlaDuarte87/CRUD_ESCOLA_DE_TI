@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
 import { CreateViagemDto } from './dto/create-viagem.dto';
 import { UpdateViagemDto } from './dto/update-viagem.dto';
+import { Viagem } from './entities/viagem.entity';
 
 @Injectable()
 export class ViagemService {
-  create(createViagemDto: CreateViagemDto) {
-    return 'This action adds a new viagem';
+
+  constructor(
+    @InjectRepository(Viagem)
+    private readonly viagemRepository: Repository<Viagem>,
+  ){}
+
+
+  async create(createViagemDto: CreateViagemDto) {
+    const viagem = await this.viagemRepository.create(CreateViagemDto);
+    return this.viagemRepository.save(viagem);
+
   }
 
-  findAll() {
-    return `This action returns all viagem`;
+  async findAll(): Promise<Viagem[]> {
+    return await this.viagemRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} viagem`;
+  async findOne(id: number): Promise<Viagem>{
+    const viagem = await this.viagemRepository.findOne({where:{idKey: id}});
+    if(!viagem){
+      throw new NotFoundException('Viagem não localizada');
+    }
+    return viagem;
   }
 
-  update(id: number, updateViagemDto: UpdateViagemDto) {
-    return `This action updates a #${id} viagem`;
+  async update(id: number, data: Viagem): Promise<Viagem>{
+    await this.viagemRepository.update(id, data);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} viagem`;
+  async remove(id: number):Promise<void>{
+    const viagem = await this.findOne(id);
+    await this.viagemRepository.remove(viagem);
   }
 }
+
+/*
+métodos:
+adicionar destino
+remover destino
+cadastrar nome
+cadastrar data
+cadastrar valor (usar a formatação de valor)
+*/

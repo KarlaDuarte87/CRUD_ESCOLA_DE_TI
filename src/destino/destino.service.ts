@@ -24,3 +24,5 @@ export class DestinoService {
     return `This action removes a #${id} destino`;
   }
 }
+
+/*criar o crud do destino */
