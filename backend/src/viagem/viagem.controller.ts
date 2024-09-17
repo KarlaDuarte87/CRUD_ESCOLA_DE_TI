@@ -1,20 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ViagemService } from './viagem.service';
-import { CreateViagemDto } from './dto/create-viagem.dto';
-import { UpdateViagemDto } from './dto/update-viagem.dto';
+import { Viagem } from './entities/viagem.entity';
 
 @Controller('viagem')
 export class ViagemController {
   constructor(private readonly viagemService: ViagemService) {}
 
+
   @Post()
-  async create(@Body() createViagemDto: CreateViagemDto) {
-    return this.viagemService.create(createViagemDto);
+  async create(@Body() viagem: Viagem): Promise<Viagem> {
+    return this.viagemService.create(viagem);
   }
 
   @Get()
-  findAll() {
-    return this.viagemService.findAll();
+  async findAll() {
+   return this.viagemService.findAll();
   }
 
   @Get(':id')
@@ -23,18 +23,15 @@ export class ViagemController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateViagemDto: UpdateViagemDto) {
-    return this.viagemService.update(+id, updateViagemDto);
+  async update(@Param('id') id: string, @Body() viagem: Viagem) {
+    return this.viagemService.update(+id, viagem);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.viagemService.remove(+id);
   }
 }
-
-
-
 /* fazer as seguintes rotas: 
 
 - get all

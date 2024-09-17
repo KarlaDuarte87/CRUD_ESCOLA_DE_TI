@@ -1,52 +1,32 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from "@nestjs/typeorm";
-import { CreateViagemDto } from './dto/create-viagem.dto';
-import { UpdateViagemDto } from './dto/update-viagem.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { Viagem } from './entities/viagem.entity';
 
-@Injectable()
-export class ViagemService {
+@InjectModel()
+export class ViagemService{
 
-  constructor(
-    @InjectRepository(Viagem)
-    private readonly viagemRepository: Repository<Viagem>,
-  ){}
+  constructor(@InjectModel('Viagem') private readonly viagemModel: Model<Viagem>){}
 
+  async getAll(){
+    return await this.viagemModel.find().exec();
+  }
 
-  async create(createViagemDto: CreateViagemDto) {
-    const viagem = await this.viagemRepository.create(CreateViagemDto);
-    return this.viagemRepository.save(viagem);
+  async getById(id: number){
+    return await this.viagemModel.find(id).exec();
+  }
+
+  async create(viagem: Viagem){
+    const createViagem = new this.viagemModel(viagem);
+    return await createViagem.save();
 
   }
 
-  async findAll(): Promise<Viagem[]> {
-    return await this.viagemRepository.find();
-  }
-
-  async findOne(id: number): Promise<Viagem>{
-    const viagem = await this.viagemRepository.findOne({where:{idKey: id}});
-    if(!viagem){
-      throw new NotFoundException('Viagem não localizada');
-    }
-    return viagem;
-  }
-
-  async update(id: number, data: Viagem): Promise<Viagem>{
-    await this.viagemRepository.update(id, data);
-    return this.findOne(id);
-  }
-
-  async remove(id: number):Promise<void>{
-    const viagem = await this.findOne(id);
-    await this.viagemRepository.remove(viagem);
-  }
+  async update(id: string, task: Task){
+    await this.viagemModel.updateOne({_id: id}, viagem())exec();
+  return this.getById(id);
 }
 
-/*
-métodos:
-adicionar destino
-remover destino
-cadastrar nome
-cadastrar data
-cadastrar valor (usar a formatação de valor)
-*/
+async delete(id: string){
+  return await this.viagemModel.deleteOne({_id:id}).exec();
+}
+};
