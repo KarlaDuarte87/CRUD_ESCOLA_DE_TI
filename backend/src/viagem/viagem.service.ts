@@ -1,6 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Viagem } from './entities/viagem.entity';
+import { UpdateViagemDto } from './dto/update-viagem.dto';
 
 @InjectModel()
 export class ViagemService{
@@ -21,12 +22,13 @@ export class ViagemService{
 
   }
 
-  async update(id: string, task: Task){
-    await this.viagemModel.updateOne({_id: id}, viagem())exec();
+  async update(id: string, viagem: UpdateViagemDto){
+    await this.viagemModel.updateOne({_id: id}, UpdateViagemDto, {new : true});
   return this.getById(id);
 }
 
 async delete(id: string){
   return await this.viagemModel.deleteOne({_id:id}).exec();
 }
+
 };

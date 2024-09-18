@@ -1,9 +1,20 @@
-import * as mongoose from 'mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const ViagemSchema = new mongoose.Schema({
-    nome: String,
-    dataSaida: Date,
-    dataChegada: Date,
-    valor: Number,
+@Schema()
+export class Viagem extends Document {
+  @Prop({ required: true })
+  nome: string;
 
-})
+  @Prop({ required: true })
+  dataSaida: Date;
+
+  @Prop({ required: true })
+  dataChegada: Date;
+
+  @Prop({ required: true })
+  valor: number;
+}
+
+export const ViagemSchema = SchemaFactory.createForClass(Viagem);
+

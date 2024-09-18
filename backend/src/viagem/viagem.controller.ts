@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ViagemService } from './viagem.service';
-import { Viagem } from './entities/viagem.entity';
+import { Viagem } from './schema/viagem.schema';
 
 @Controller('viagem')
 export class ViagemController {
@@ -14,12 +14,12 @@ export class ViagemController {
 
   @Get()
   async findAll() {
-   return this.viagemService.findAll();
+   return this.viagemService.getAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.viagemService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.viagemService.getById(+id);
   }
 
   @Patch(':id')
@@ -29,7 +29,7 @@ export class ViagemController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.viagemService.remove(+id);
+    return this.viagemService.delete(id);
   }
 }
 /* fazer as seguintes rotas: 
